@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-eyh^ywru#&89ojgbr)o6jmwo!#e!7z1ad&g&n$0k0wo+yqcfyf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['c42c-2401-4900-1c5e-2331-a083-c99f-c4ea-64c9.ngrok-free.app']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'price',
 ]
 
 MIDDLEWARE = [
@@ -80,26 +81,29 @@ WSGI_APPLICATION = 'hisaabkitaabproject.wsgi.application'
 #     }
 # }
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'india@123',
-        'HOST': 'db',          # This will be the service name in the Docker Compose
-        'PORT': '5432',        # Default PostgreSQL port
-    }
-}
+# uncomment for docker
 # DATABASES = {
 #     'default': {
 #         'ENGINE': 'django.db.backends.postgresql',
 #         'NAME': 'postgres',
 #         'USER': 'postgres',
 #         'PASSWORD': 'india@123',
-#         'HOST': 'localhost',          # This will be the service name in the Docker Compose
+#         'HOST': 'db',          # This will be the service name in the Docker Compose
 #         'PORT': '5432',        # Default PostgreSQL port
 #     }
 # }
+
+# uncomment for normal python server
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'india@123',
+        'HOST': 'localhost',          # This will be the service name in the Docker Compose
+        'PORT': '5432',        # Default PostgreSQL port
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
