@@ -22,9 +22,12 @@ pass: india@123
 2.
 
 #apis
-http://localhost:8000/price/getPrice/gaay%20dudh/
+https://0e4a-2401-4900-1f3a-3235-5-a210-9106-3bc9.ngrok-free.app/price/getPrice?query=' + textData
 
 
 if runnning server 
 1.venv\Scripts\activate
 2.python manage.py runserver 
+
+update backend\hisaabkitaabproject\settings.py with  ALLOWED_HOSTS = ['0e4a-2401-4900-1f3a-3235-5-a210-9106-3bc9.ngrok-free.app']
+ if you update new ngrok url
