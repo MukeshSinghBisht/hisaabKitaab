@@ -22,7 +22,7 @@ pass: india@123
 2.
 
 #apis
-https://0e4a-2401-4900-1f3a-3235-5-a210-9106-3bc9.ngrok-free.app/price/getPrice?query=' + textData
+https://0e4a-2401-4900-1f3a-3235-5-a210-9106-3bc9.ngrok-free.app/price/getPrice?query=gaaykadudh
 
 
 if runnning server 

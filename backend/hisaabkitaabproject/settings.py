@@ -24,8 +24,8 @@ SECRET_KEY = 'django-insecure-eyh^ywru#&89ojgbr)o6jmwo!#e!7z1ad&g&n$0k0wo+yqcfyf
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-
-ALLOWED_HOSTS = ['0e4a-2401-4900-1f3a-3235-5-a210-9106-3bc9.ngrok-free.app']
+# http://hk-env2-env.eba-stwjc48z.us-east-1.elasticbeanstalk.com/
+ALLOWED_HOSTS = ['0e4a-2401-4900-1f3a-3235-5-a210-9106-3bc9.ngrok-free.app','localhost','hk-env2-env.eba-stwjc48z.us-east-1.elasticbeanstalk.com']
 
 
 # Application definition
@@ -94,16 +94,16 @@ WSGI_APPLICATION = 'hisaabkitaabproject.wsgi.application'
 # }
 
 # uncomment for normal python server
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'india@123',
-        'HOST': 'localhost',          # This will be the service name in the Docker Compose
-        'PORT': '5432',        # Default PostgreSQL port
-    }
-}
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.postgresql',
+#         'NAME': 'postgres',
+#         'USER': 'postgres',
+#         'PASSWORD': 'india@123',
+#         'HOST': 'localhost',          # This will be the service name in the Docker Compose
+#         'PORT': '5432',        # Default PostgreSQL port
+#     }
+# }
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 
@@ -144,3 +144,17 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/4.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'level': 'DEBUG',  # Adjust the log level as needed
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'root': {
+        'handlers': ['console'],
+        'level': 'INFO',  # Adjust the log level as needed
+    },
+}
