@@ -33,8 +33,12 @@ update backend\hisaabkitaabproject\settings.py with  ALLOWED_HOSTS = ['*']
  if you update new ngrok url
 
  useful links"
- https://medium.com/ruralscript/install-and-setuppostgresql-on-ubuntu-amazon-ec2-5d1af79b4fca
+1. https://medium.com/ruralscript/install-and-setuppostgresql-on-ubuntu-amazon-ec2-5d1af79b4fca
+2.https://www.knowledgehut.com/blog/web-development/install-django-on-ubuntu
+3.https://awstip.com/how-to-deploy-django-application-on-aws-ubuntu-ec2-25a24ca439e2
+
 
  remote login from window to aws server :  ssh -i "hkapiserverkeypair.pem" ubuntu@ec2-43-205-129-116.ap-south-1.compute.amazonaws.com
 inside directry pemforebs
 then go to app/hisaabkitaab and git pull
+
