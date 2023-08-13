@@ -38,13 +38,23 @@ update backend\hisaabkitaabproject\settings.py with  ALLOWED_HOSTS = ['*']
 3.https://awstip.com/how-to-deploy-django-application-on-aws-ubuntu-ec2-25a24ca439e2
 
 
+##connecting to remote server :
  remote login from window to aws server :  ssh -i "hkapiserverkeypair.pem" ubuntu@ec2-43-205-129-116.ap-south-1.compute.amazonaws.com
 inside directry pemforebs
 then go to app/hisaabkitaab and git pull
 
 
 
-## for production:
+## for production server api starting:
+prod url: http://43.205.129.116:8000
 1.source venv-hkapi/bin/activate
-<!-- 2.gunicorn --bind 0.0.0.0:8000 hisaabkitaabproject.wsgi // it will start server in prod -->
-3.gunicorn hisaabkitaabproject.wsgi:application --bind 0.0.0.0:8000 --access-logfile access.log --error-logfile error.log
+2.gunicorn --bind 0.0.0.0:8000 hisaabkitaabproject.wsgi // it will start server in prod
+3.nohup gunicorn hisaabkitaabproject.wsgi:application --bind 0.0.0.0:8000 &
+4.tail -f nohup.out // to see logs from nohub logs
+
+5. command to get pid on 8000 on prod ubuntu: sudo lsof -i :8000 -t
+5.1. outut will be like this :
+8470
+8604
+6.to kill process :sudo kill 8604
+7.
