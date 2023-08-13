@@ -21,14 +21,14 @@ def get_price(request):
 
         with open(full_path) as json_file:
             items = json.load(json_file)
-            name = "gaay ka dudh"
+            name = "bhains ka dudh"
             matching_item = get_item(items, name)
         if query is not None:
             # Do something with the 'query' parameter (e.g., fetch price for the item)
             # Replace this with your actual logic for processing the query
 
             data = {
-                'item': 'gaay ka dudh',  # Replace with the actual item name
+                'item': 'bhains ka dudh',  # Replace with the actual item name
                 'price': matching_item['price'],  # Replace with the actual price value
             }
             return JsonResponse(data)
