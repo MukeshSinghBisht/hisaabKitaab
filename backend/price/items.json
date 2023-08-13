@@ -1,0 +1,26 @@
+[
+{
+    "id": 1,
+    "name": "gaay ka dudh",
+    "price": 55,
+    "unit": "litre"
+},
+{
+    "id": 2,
+    "name": "bhains ka dudh",
+    "price": 65,
+    "unit": "litre"
+},
+{
+    "id": 3,
+    "name": "dahi",
+    "price": 100,
+    "unit": "kilo"
+},
+{
+    "id": 4,
+    "name": "paneer",
+    "price": 340,
+    "unit": "kilo"
+}
+]
