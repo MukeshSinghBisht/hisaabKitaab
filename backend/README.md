@@ -37,3 +37,4 @@ update backend\hisaabkitaabproject\settings.py with  ALLOWED_HOSTS = ['*']
 
  remote login from window to aws server :  ssh -i "hkapiserverkeypair.pem" ubuntu@ec2-43-205-129-116.ap-south-1.compute.amazonaws.com
 inside directry pemforebs
+then go to app/hisaabkitaab and git pull
