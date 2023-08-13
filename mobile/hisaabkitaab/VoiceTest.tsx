@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {View, Button, Text} from 'react-native';
 import Voice from '@react-native-community/voice';
-
+import {config} from './config';
 interface State {
   recognizedText: string;
   price: number;
@@ -12,7 +12,7 @@ class VoiceTest extends Component<{}, State> {
     super(props);
     this.state = {
       recognizedText: '',
-      price: 0
+      price: 0,
     };
     Voice.onSpeechStart = this.onSpeechStartHandler.bind(this);
     Voice.onSpeechEnd = this.onSpeechEndHandler.bind(this);
@@ -26,10 +26,11 @@ class VoiceTest extends Component<{}, State> {
   onSpeechEndHandler() {
     console.log('Speech ended');
   }
-  async getPrice (textData) {
+  async getPrice(textData) {
     try {
-      const response = await fetch('https://0e4a-2401-4900-1f3a-3235-5-a210-9106-3bc9.ngrok-free.app/price/getPrice?query=' + textData);
-    //   const response = await fetch('https://0e4a-2401-4900-1f3a-3235-5-a210-9106-3bc9.ngrok-free.app/price/getPrice');
+      const url =`${config.apiUrl}/price/getPrice?query=${textData}`;
+      console.log('url:', url)
+      const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -39,11 +40,10 @@ class VoiceTest extends Component<{}, State> {
       }
       const data = await response.json();
       // Assuming your API response has a 'price' field, update the 'price' state with the fetched value.
-     console.log({data: data})
-    this.setState({price: data.price});
-
+      console.log({data: data});
+      this.setState({price: data.price});
     } catch (error) {
-      console.log('error as string',JSON.stringify(error))
+      console.log('error as string', JSON.stringify(error));
       console.error('Error fetching data:', error);
     }
   }
@@ -52,11 +52,10 @@ class VoiceTest extends Component<{}, State> {
     this.setState({recognizedText: event.value[0]});
     await this.getPrice(this.state.recognizedText);
     this.setState({recognizedText: event.value[0]});
-
   }
 
   onStartButtonPress() {
-    console.log('button pressed')
+    console.log('button pressed');
     Voice.start('en-US');
   }
 
@@ -74,10 +73,7 @@ class VoiceTest extends Component<{}, State> {
             : 'No speech input yet'}
         </Text>
         <Text style={{marginTop: 20}}>
-          Price:{' '}
-          {this.state.price
-            ? this.state.price
-            : 'Ask price'}
+          Price: {this.state.price ? this.state.price : 'Ask price'}
         </Text>
       </View>
     );

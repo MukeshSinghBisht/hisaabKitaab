@@ -42,3 +42,9 @@ update backend\hisaabkitaabproject\settings.py with  ALLOWED_HOSTS = ['*']
 inside directry pemforebs
 then go to app/hisaabkitaab and git pull
 
+
+
+## for production:
+1.source venv-hkapi/bin/activate
+<!-- 2.gunicorn --bind 0.0.0.0:8000 hisaabkitaabproject.wsgi // it will start server in prod -->
+3.gunicorn hisaabkitaabproject.wsgi:application --bind 0.0.0.0:8000 --access-logfile access.log --error-logfile error.log

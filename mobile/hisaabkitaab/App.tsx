@@ -9,7 +9,7 @@ const App = () => {
   return (
     
      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
-     <Text>My App</Text>
+     <Text>Madhuvan Dairy</Text>
      <VoiceTest/>
    </View>
   );
