@@ -26,8 +26,9 @@ https://0e4a-2401-4900-1f3a-3235-5-a210-9106-3bc9.ngrok-free.app/price/getPrice?
 
 
 if runnning server 
-1.venv\Scripts\activate
-2.python manage.py runserver 
+1.got to backend
+2.venv\Scripts\activate
+3.python manage.py runserver 
 
 update backend\hisaabkitaabproject\settings.py with  ALLOWED_HOSTS = ['*']
  if you update new ngrok url
@@ -43,6 +44,11 @@ update backend\hisaabkitaabproject\settings.py with  ALLOWED_HOSTS = ['*']
 inside directry pemforebs
 then go to app/hisaabkitaab and git pull
 
+## to see recent logs on server in python log files:
+1.got to app/hisaabKitaab/backend and
+2.run: tail -n 50 -f django.log
+
+
 
 
 ## for production server api starting:
@@ -57,4 +63,6 @@ prod url: http://43.205.129.116:8000
 8470
 8604
 6.to kill process :sudo kill 8604
-7.
+7.TODO:
+1.we can conevert hinglish to english , then convert hinglish words to numbers and units and then get the product name from the rest of the sentence
+2.
