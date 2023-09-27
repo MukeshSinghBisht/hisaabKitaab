@@ -62,7 +62,7 @@ const Table: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <Text>tabledata</Text>
+      <Text style={{fontWeight:'bold', margin: 15, fontSize:25}}></Text>
       <View style={styles.headerRow}>
       <Text style={styles.headerCell}>Name</Text>
         <Text style={styles.headerCell}>Price</Text>
@@ -86,19 +86,22 @@ const Table: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 16,
+    paddingLeft: 10,
+    marginLeft: 1,
+    width: 400,
   },
   headerRow: {
     flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: 'gray',
+    borderBottomWidth: 2,
+    borderColor: 'purple',
     paddingBottom: 8,
-    marginBottom: 8,
+    marginBottom: 40,
   },
   headerCell: {
     flex: 1,
     fontWeight: 'bold',
     textAlign: 'center',
+    fontSize: 20,
   },
   row: {
     flexDirection: 'row',
@@ -110,6 +113,7 @@ const styles = StyleSheet.create({
   cell: {
     flex: 1,
     textAlign: 'center',
+    fontWeight: '800'
   },
 });
 

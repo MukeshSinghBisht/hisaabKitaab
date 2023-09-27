@@ -6,10 +6,9 @@ import {createNativeStackNavigator} from '@react-navigation/native-stack';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {TouchableOpacity} from 'react-native';
 
-
 function HomeScreen({navigation}) {
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center', backgroundColor: '#e6ffe6',}}>
       {/* <Text style={{marginTop: 200, fontSize: 20, fontWeight: "bold"}}>Ask me</Text> */}
       <VoiceTest />
       {/* <Button
@@ -22,8 +21,13 @@ function HomeScreen({navigation}) {
 
 function ItemsListingScreen() {
   return (
-    <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>All Products listing</Text>
+    <View
+      style={{
+        flex: 1,
+        alignItems: 'center',
+        justifyContent: 'center',
+        backgroundColor: '#e6ffe6',
+      }}>
       <Table></Table>
     </View>
   );
@@ -71,7 +75,6 @@ const App = () => {
 };
 
 const Tab = createBottomTabNavigator();
-
 
 function MyTabBar({state, descriptors, navigation}) {
   return (
@@ -127,7 +130,13 @@ function MyTabBar({state, descriptors, navigation}) {
               justifyContent: 'space-evenly',
               alignItems: 'center',
             }}>
-            <Text style={{color: isFocused ? '#673ab7' : '#222', margin: 15, fontSize: 15, fontWeight: 'bold'}}>
+            <Text
+              style={{
+                color: isFocused ? '#673ab7' : '#222',
+                margin: 15,
+                fontSize: 15,
+                fontWeight: 'bold',
+              }}>
               {label}
             </Text>
           </TouchableOpacity>
