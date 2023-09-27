@@ -10,7 +10,7 @@ import {TouchableOpacity} from 'react-native';
 function HomeScreen({navigation}) {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Home Screen</Text>
+      {/* <Text style={{marginTop: 200, fontSize: 20, fontWeight: "bold"}}>Ask me</Text> */}
       <VoiceTest />
       {/* <Button
         title="Go to Details"
@@ -20,11 +20,11 @@ function HomeScreen({navigation}) {
   );
 }
 
-function DetailsScreen() {
+function ItemsListingScreen() {
   return (
     <View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-      <Text>Details Screen</Text>
       <Text>All Products listing</Text>
+      <Table></Table>
     </View>
   );
 }
@@ -40,6 +40,7 @@ const MyTheme = {
   },
 };
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Table from './src/itemstable';
 
 const App = () => {
   return (
@@ -63,7 +64,7 @@ const App = () => {
           tabBarInactiveTintColor: 'gray',
         })}>
         <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Details" component={DetailsScreen} />
+        <Tab.Screen name="Items Listing" component={ItemsListingScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );

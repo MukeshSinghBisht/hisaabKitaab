@@ -28,8 +28,8 @@ class VoiceTest extends Component<{}, State> {
   }
   async getPrice(textData) {
     try {
-      const url =`${config.apiUrl}/price/getPrice?query=${textData}`;
-      console.log('url:', url)
+      const url = `${config.apiUrl}/price/getPrice?query=${textData}`;
+      console.log('url:', url);
       const response = await fetch(url);
       if (!response.ok) {
         throw new Error('Network response was not ok');
@@ -61,7 +61,13 @@ class VoiceTest extends Component<{}, State> {
 
   render() {
     return (
-      <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          marginBottom: 40,
+        }}>
         <Button
           title="Start Recording"
           onPress={this.onStartButtonPress.bind(this)}
