@@ -67,7 +67,7 @@ def get_query_data(sentence):
     }
     return json_object
 
-def get_items():
+def get_items(request):
     try:
         file_name = 'items.json'
         full_path = os.path.join(os.getcwd(),'price', file_name)
@@ -75,7 +75,8 @@ def get_items():
         with open(full_path) as json_file:
             items = json.load(json_file)
             if items is not None:
-                return JsonResponse(items)
+                response_data = {'data': items}
+                return JsonResponse(response_data)
             else:
                 # Return an error response if 'query' parameter is missing
                  return JsonResponse({'error': 'Items not found'}, status=404)
