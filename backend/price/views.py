@@ -1,9 +1,32 @@
 from django.http import JsonResponse
-from .models import Item
-import json
-import os
+from django.core.exceptions import ObjectDoesNotExist
 from .process_english_sentence import process_english
-
+allitems = [
+{
+    "id": 1,
+    "name": "cow milk",
+    "price": 55,
+    "unit": "l"
+},
+{
+    "id": 2,
+    "name": "buffalo milk",
+    "price": 65,
+    "unit": "l"
+},
+{
+    "id": 3,
+    "name": "curd",
+    "price": 100,
+    "unit": "kg"
+},
+{
+    "id": 4,
+    "name": "cheese",
+    "price": 340,
+    "unit": "kg"
+}
+]
 def get_item(items, name):
     itemFound = None
     for item in items:
@@ -21,21 +44,17 @@ def get_price(request):
         queryData = get_query_data(query)
         print('query data',queryData)
         # =====
-        file_name = 'items.json'
-        full_path = os.path.join(os.getcwd(),'price', file_name)
-
-        with open(full_path) as json_file:
-            items = json.load(json_file)
-            matching_item = get_item(items, queryData['name'])
-            print('mmatching_item',matching_item)
-            if matching_item is None:
-                return JsonResponse({'error': 'Item not found'}, status=404)
-            if query is not None:
-                return JsonResponse(matching_item)
-            else:
-                # Return an error response if 'query' parameter is missing
-                return JsonResponse({'error': 'Missing query parameter'}, status=400)
-    except Item.DoesNotExist:
+        items = allitems
+        matching_item = get_item(items, queryData['name'])
+        print('mmatching_item',matching_item)
+        if matching_item is None:
+            return JsonResponse({'error': 'Item not found'}, status=404)
+        if query is not None:
+            return JsonResponse(matching_item)
+        else:
+            # Return an error response if 'query' parameter is missing
+            return JsonResponse({'error': 'Missing query parameter'}, status=400)
+    except ObjectDoesNotExist:
         return JsonResponse({'error': 'Item not found'}, status=404)
 
 
@@ -69,16 +88,12 @@ def get_query_data(sentence):
 
 def get_items(request):
     try:
-        file_name = 'items.json'
-        full_path = os.path.join(os.getcwd(),'price', file_name)
-
-        with open(full_path) as json_file:
-            items = json.load(json_file)
-            if items is not None:
-                response_data = {'data': items}
-                return JsonResponse(response_data)
-            else:
-                # Return an error response if 'query' parameter is missing
-                 return JsonResponse({'error': 'Items not found'}, status=404)
-    except Item.DoesNotExist:
+        items = allitems
+        if items is not None:
+            response_data = {'data': items}
+            return JsonResponse(response_data)
+        else:
+            # Return an error response if 'query' parameter is missing
+                return JsonResponse({'error': 'Items not found'}, status=404)
+    except ObjectDoesNotExist:
         return JsonResponse({'error': 'Items not found'}, status=404)
