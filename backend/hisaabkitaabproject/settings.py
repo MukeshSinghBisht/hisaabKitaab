@@ -104,6 +104,18 @@ WSGI_APPLICATION = 'hisaabkitaabproject.wsgi.application'
 #         'PORT': '5432',        # Default PostgreSQL port
 #     }
 # }
+
+# uncomment for supabase
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'bZh663@d4%Zc9yS',
+        'HOST': 'db.olsuhufpdhrjxiobqvxm.supabase.co',          # This will be the service name in the Docker Compose
+        'PORT': '5432',        # Default PostgreSQL port
+    }
+}
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
 

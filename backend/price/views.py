@@ -1,6 +1,9 @@
 from django.http import JsonResponse
 from django.core.exceptions import ObjectDoesNotExist
 from .process_english_sentence import process_english
+from django.db import connection
+import json
+
 allitems = [
 {
     "id": 1,
@@ -28,12 +31,27 @@ allitems = [
 }
 ]
 def get_item(items, name):
-    itemFound = None
-    for item in items:
-        print(item)
-        if item['name'] == name:
-            itemFound = item
-    return itemFound
+    # itemFound = None
+    # for item in items:
+    #     print(item)
+    #     if item['name'] == name:
+    #         itemFound = item
+    with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM item WHERE name = %s', (name,))
+            item = cursor.fetchone()
+            print('item from supbase',item)
+    _id, created_at, name, price, unit, image_url = item
+    json_item = {
+        'id': _id,
+        'created_at': created_at.strftime('%Y-%m-%d %H:%M:%S') if created_at else None,
+        'name': name,
+        'price': float(price) if price is not None else None,
+        'unit': unit,
+        'image_url': image_url,
+    }
+    print('json_item from supbase',json_item)
+
+    return json_item
 
 def get_price(request):
     try:
@@ -88,9 +106,25 @@ def get_query_data(sentence):
 
 def get_items(request):
     try:
-        items = allitems
+        # items = allitems
+        with connection.cursor() as cursor:
+            cursor.execute('SELECT * FROM item')
+            items = cursor.fetchall()
+        json_array = []
+
+        for row in items:
+            item = {
+                'id': row[0],           # Replace with your actual column names
+                'created_at': row[1],
+                'name': row[2],
+                'price': row[3],
+                'unit': row[4],
+                'image_url': row[5],
+                # Add more key-value pairs as needed
+            }
+            json_array.append(item)
         if items is not None:
-            response_data = {'data': items}
+            response_data = {'data': json_array}
             return JsonResponse(response_data)
         else:
             # Return an error response if 'query' parameter is missing
