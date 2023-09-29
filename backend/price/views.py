@@ -57,7 +57,7 @@ def get_price(request):
     try:
 
         query = request.GET.get('query')
-        print('query=========='+ query)
+        print('query==========',query)
         # ===
         queryData = get_query_data(query)
         print('query data',queryData)
