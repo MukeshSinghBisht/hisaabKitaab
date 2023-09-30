@@ -33,13 +33,11 @@ allitems = [
 def get_item(items, name):
     # itemFound = None
     # for item in items:
-    #     print(item)
     #     if item['name'] == name:
     #         itemFound = item
     with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM item WHERE name = %s', (name,))
             item = cursor.fetchone()
-            print('item from supbase',item)
     _id, created_at, name, price, unit, image_url = item
     json_item = {
         'id': _id,
@@ -49,22 +47,15 @@ def get_item(items, name):
         'unit': unit,
         'image_url': image_url,
     }
-    print('json_item from supbase',json_item)
-
     return json_item
 
 def get_price(request):
     try:
 
         query = request.GET.get('query')
-        print('query==========',query)
-        # ===
         queryData = get_query_data(query)
-        print('query data',queryData)
-        # =====
         items = allitems
         matching_item = get_item(items, queryData['name'])
-        print('mmatching_item',matching_item)
         if matching_item is None:
             return JsonResponse({'error': 'Item not found'}, status=404)
         if query is not None:
@@ -82,9 +73,6 @@ def get_price(request):
 #     hinglish_sentence = "ek kilo gay ka dudh"
 #     quantities, units, product_names = process_hinglish(hinglish_sentence)
 
-#     print("Quantities:", quantities)
-#     print("Units:", units)
-#     print("Product Names:", product_names)
 #     # nlp ends
 #     return json_object
 
@@ -92,10 +80,6 @@ def get_price(request):
 def get_query_data(sentence):
     # nlp start
     quantity, unit, product_name = process_english(sentence)
-
-    print("Quantities:", quantity)
-    print("Units:", unit)
-    print("Product Names:", product_name)
     # nlp ends
     json_object = {
         "name": product_name,
