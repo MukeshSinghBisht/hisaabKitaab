@@ -3,6 +3,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from .process_english_sentence import process_english
 from django.db import connection
 import json
+import logging
 
 allitems = [
 {
@@ -33,11 +34,13 @@ allitems = [
 def get_item(items, name):
     # itemFound = None
     # for item in items:
+    #     logging.info(item['name'])
     #     if item['name'] == name:
     #         itemFound = item
     with connection.cursor() as cursor:
             cursor.execute('SELECT * FROM item WHERE name = %s', (name,))
             item = cursor.fetchone()
+            # logging.info('item from supbase',item)
     _id, created_at, name, price, unit, image_url = item
     json_item = {
         'id': _id,
@@ -47,15 +50,22 @@ def get_item(items, name):
         'unit': unit,
         'image_url': image_url,
     }
+    # logging.info('json_item from supbase',json_item)
+
     return json_item
 
 def get_price(request):
     try:
 
         query = request.GET.get('query')
+        logging.info('query========== %s', query)
+        # ===
         queryData = get_query_data(query)
+        # logging.info('query data',queryData)
+        # =====
         items = allitems
         matching_item = get_item(items, queryData['name'])
+        # logging.info('mmatching_item',matching_item)
         if matching_item is None:
             return JsonResponse({'error': 'Item not found'}, status=404)
         if query is not None:
@@ -73,6 +83,9 @@ def get_price(request):
 #     hinglish_sentence = "ek kilo gay ka dudh"
 #     quantities, units, product_names = process_hinglish(hinglish_sentence)
 
+#     logging.info("Quantities:", quantities)
+#     logging.info("Units:", units)
+#     logging.info("Product Names:", product_names)
 #     # nlp ends
 #     return json_object
 
@@ -80,6 +93,10 @@ def get_price(request):
 def get_query_data(sentence):
     # nlp start
     quantity, unit, product_name = process_english(sentence)
+
+    # logging.info("Quantities:", quantity)
+    # logging.info("Units:", unit)
+    # logging.info("Product Names:", product_name)
     # nlp ends
     json_object = {
         "name": product_name,
