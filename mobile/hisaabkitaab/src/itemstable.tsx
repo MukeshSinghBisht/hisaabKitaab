@@ -42,7 +42,7 @@ const Table: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
 
   useEffect(() => {
-    const url = `${config.apiUrl}/price/items/`;
+    const url = `${config.crudUrl}`;
     console.log('url:', url);
     // Perform your API call here and update the data state
     fetch(url)
@@ -50,8 +50,8 @@ const Table: React.FC = () => {
         return response.json();
       })
       .then(responseData => {
-        console.log('items list in app', responseData);
-        setData(responseData.data); // Update the data state with API response data
+        console.log('items list in app,responseData:', responseData);
+        setData(responseData); // Update the data state with API response data
         // setIsLoading(false); // Set loading to false when data is loaded
       })
       .catch(error => {

@@ -1,3 +1,5 @@
 export const config = {
-    apiUrl: 'http://43.205.129.116:8000'
-}
+  priceUrl:
+    'https://cw6rmblwmh.execute-api.ap-south-1.amazonaws.com/price/getPrice',
+  crudUrl: 'https://371ea2ur16.execute-api.ap-south-1.amazonaws.com/dev/items',
+};

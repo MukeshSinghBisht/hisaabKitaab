@@ -26,11 +26,12 @@ class VoiceTest extends Component<{}, State> {
   onSpeechEndHandler() {
     console.log('Speech ended');
   }
-  async getPrice(textData) {
+  async getPrice(textData: any) {
     try {
-      const url = `${config.apiUrl}/price/getPrice?query=${textData}`;
+      const url = `${config.priceUrl}?query=${textData}`;
       console.log('url:', url);
       const response = await fetch(url);
+      console.log({response})
       if (!response.ok) {
         throw new Error('Network response was not ok');
       }
@@ -41,7 +42,7 @@ class VoiceTest extends Component<{}, State> {
       const data = await response.json();
       // Assuming your API response has a 'price' field, update the 'price' state with the fetched value.
       console.log({data: data});
-      this.setState({price: data.price});
+      this.setState({price: data[0].price});
     } catch (error) {
       console.log('error as string', JSON.stringify(error));
       console.error('Error fetching data:', error);
