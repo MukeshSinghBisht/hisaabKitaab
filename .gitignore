@@ -1,1 +1,11 @@
 backend/django.log
+backend\serverless\pricing\.serverless
+backend\serverless\pricing\node_modules
+backend\serverless\pricing\venv
+backend\serverless\pricing\package-lock.json
+backend\serverless\crud\.serverless
+backend\serverless\crud\dist
+backend\serverless\crud\node_modules
+backend\serverless\crud\package-lock.json
+backend\djangoapp\venv
+backend\djangoapp\pemforebs
