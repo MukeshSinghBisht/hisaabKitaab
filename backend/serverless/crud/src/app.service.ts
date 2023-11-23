@@ -12,6 +12,18 @@ export class AppService {
   ) {}
   list(): Promise<Item[]> {
     return this.itemModel.findAll();
-    // return 'Hello World!';
+  }
+  create(data: any): Promise<Item> {
+    return this.itemModel.create(data, {returning: true});
+  }
+  update(id: number, data: any): Promise<[affectedCount: number, affectedRows: Item[]]> {
+    return this.itemModel.update(data, { where: { id } , returning: true});
+  }
+  async delete(id: number): Promise<number> {
+    const deletedCount = await this.itemModel.destroy({ where: { id } });
+    return deletedCount;
+  }
+  async  getItemById(id: number): Promise<Item | null> {
+    return Item.findByPk(id);
   }
 }

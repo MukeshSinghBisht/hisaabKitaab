@@ -19,14 +19,47 @@ package:
     - README.md
 
 functions:
-  index:
-    handler: dist/index.handler
-    events:
-    - http:
-        cors: true
-        path: '/items'
-        method: get
+  # index:
+  #   handler: dist/index.handler
+  #   events:
+  #   - http:
+  #       cors: true
+  #       path: '/items'
+  #       method: get
+  # createItem:
+  #   handler: dist/index.handler
+  #   events:
+  #   - http:
+  #       cors: true
+  #       path: '/item'
+  #       method: post
+  # updateItem:
+  #   handler: dist/index.handler
+  #   events:
+  #   - http:
+  #       cors: true
+  #       path: '/item'
+  #       method: patch
+  # deleteItem:
+  #   handler: dist/index.handler
+  #   events:
+  #   - http:
+  #       cors: true
+  #       path: '/item'
+  #       method: delete
+    
     # - http:
     #     cors: true
     #     path: '{proxy+}'
     #     method: any
+  index:
+      handler: dist/index.handler
+      events:
+      - http:
+          cors: true
+          path: '/'
+          method: any
+      - http:
+          cors: true
+          path: '{proxy+}'
+          method: any

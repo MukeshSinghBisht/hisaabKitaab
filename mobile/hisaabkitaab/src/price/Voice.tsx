@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import {View, Button, Text} from 'react-native';
 import Voice from '@react-native-community/voice';
-import {config} from './config';
+import {config} from '../../config';
 interface State {
   recognizedText: string;
   price: number;
 }
 
-class VoiceTest extends Component<{}, State> {
+class VoiceExtended extends Component<{}, State> {
   constructor(props: {}) {
     super(props);
     this.state = {
@@ -87,4 +87,4 @@ class VoiceTest extends Component<{}, State> {
   }
 }
 
-export default VoiceTest;
+export default VoiceExtended;
