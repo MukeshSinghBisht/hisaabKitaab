@@ -10,3 +10,4 @@ backend/serverless/crud/package-lock.json
 backend/djangoapp/venv
 backend/djangoapp/pemforebs
 mobile/hisaabkitaab/node_modules
+mobile/hisaabkitaab/package-lock.json

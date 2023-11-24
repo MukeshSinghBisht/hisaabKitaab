@@ -1,61 +1,35 @@
-import * as React from 'react';
-import {View, Text} from 'react-native';
+import React from 'react';
+import {View, Text, TouchableOpacity, StyleSheet} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {TouchableOpacity} from 'react-native';
-const MyTheme = {
-  dark: false,
-  colors: {
-    primary: 'rgb(255, 45, 85)',
-    background: 'rgb(242, 242, 242)',
-    card: 'rgb(255, 255, 255)',
-    text: 'rgb(28, 28, 30)',
-    border: 'rgb(199, 199, 204)',
-    notification: 'rgb(255, 69, 58)',
-  },
-};
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import CreateItemForm from './src/price/create'; // Import the CreateItemForm component
 import {HomeScreen} from './src/price/home/home';
 import {ItemsListingScreen} from './src/price/list';
-
-const App = () => {
-  return (
-    <NavigationContainer theme={MyTheme}>
-      <Tab.Navigator
-        tabBar={props => <MyTabBar {...props} />}
-        screenOptions={({route}) => ({
-          tabBarIcon: ({focused, color, size}) => {
-            let iconName;
-
-            if (route.name === 'Home') {
-              iconName = focused ? 'information' : 'information-circle';
-            } else if (route.name === 'Details') {
-              iconName = focused ? 'ios-list-box' : 'ios-list';
-            }
-
-            // You can return any component that you like here!
-            return <Ionicons name={iconName} size={size} color={color} />;
-          },
-          tabBarActiveTintColor: 'tomato',
-          tabBarInactiveTintColor: 'gray',
-        })}>
-        <Tab.Screen name="Home" component={HomeScreen} />
-        <Tab.Screen name="Items Listing" component={ItemsListingScreen} />
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
-};
-
 const Tab = createBottomTabNavigator();
+
+const styles = StyleSheet.create({
+  tabBar: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  tabButton: {
+    flex: 1,
+    rowGap: 10,
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
+  },
+  tabText: {
+    margin: 15,
+    fontSize: 15,
+    fontWeight: 'bold',
+  },
+});
 
 function MyTabBar({state, descriptors, navigation}) {
   return (
-    <View
-      style={{
-        flexDirection: 'row',
-        justifyContent: 'space-evenly',
-        alignItems: 'center',
-      }}>
+    <View style={styles.tabBar}>
       {state.routes.map((route, index) => {
         const {options} = descriptors[route.key];
         const label =
@@ -75,7 +49,6 @@ function MyTabBar({state, descriptors, navigation}) {
           });
 
           if (!isFocused && !event.defaultPrevented) {
-            // The `merge: true` option makes sure that the params inside the tab screen are preserved
             navigation.navigate({name: route.name, merge: true});
           }
         };
@@ -96,26 +69,34 @@ function MyTabBar({state, descriptors, navigation}) {
             testID={options.tabBarTestID}
             onPress={onPress}
             onLongPress={onLongPress}
-            style={{
-              flex: 1,
-              rowGap: 10,
-              justifyContent: 'space-evenly',
-              alignItems: 'center',
-            }}>
+            style={styles.tabButton}>
             <Text
-              style={{
-                color: isFocused ? '#673ab7' : '#222',
-                margin: 15,
-                fontSize: 15,
-                fontWeight: 'bold',
-              }}>
+              style={[styles.tabText, {color: isFocused ? '#673ab7' : '#222'}]}>
               {label}
             </Text>
           </TouchableOpacity>
         );
       })}
+      {/* New "Create Item" button */}
+      {/* <TouchableOpacity
+        onPress={() => navigation.navigate('CreateItem')}
+        style={styles.tabButton}>
+        <Text style={styles.tabText}>Create Item</Text>
+      </TouchableOpacity> */}
     </View>
   );
 }
+
+const App = () => {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator tabBar={props => <MyTabBar {...props} />}>
+        <Tab.Screen name="Home" component={HomeScreen} />
+        <Tab.Screen name="Items Listing" component={ItemsListingScreen} />
+        <Tab.Screen name="Create Item" component={CreateItemForm} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+};
 
 export default App;

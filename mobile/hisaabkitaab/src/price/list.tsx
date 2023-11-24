@@ -1,4 +1,6 @@
 import React, {useEffect, useState} from 'react';
+import {useFocusEffect} from '@react-navigation/native';
+
 import {View, Text, FlatList, StyleSheet} from 'react-native';
 interface DataItem {
   id: string;
@@ -7,12 +9,12 @@ interface DataItem {
   name: string;
 }
 
-const data: DataItem[] = [
-  {id: '1', price: '$10', unit: 'each', name: 'milk'},
-  {id: '2', price: '$15', unit: 'pair', name: 'curd'},
-  {id: '3', price: '$25', unit: 'dozen', name: 'cheese'},
-  // Add more data items here
-];
+// const data: DataItem[] = [
+//   {id: '1', price: '$10', unit: 'each', name: 'milk'},
+//   {id: '2', price: '$15', unit: 'pair', name: 'curd'},
+//   {id: '3', price: '$25', unit: 'dozen', name: 'cheese'},
+//   // Add more data items here
+// ];
 import {config} from '../../config';
 export function ItemsListingScreen() {
   return (
@@ -30,7 +32,7 @@ export function ItemsListingScreen() {
 const Table: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
 
-  useEffect(() => {
+  function fetchData() {
     const url = `${config.crudUrl}`;
     console.log('url:', url);
     // Perform your API call here and update the data state
@@ -47,7 +49,24 @@ const Table: React.FC = () => {
         console.error('API Error:', error);
         // setIsLoading(false); // Set loading to false in case of an error
       });
-  }, []); // The empty dependency array ensures the effect runs only once (on component mount)
+  }
+  // useEffect(() => {
+
+  // }, []); // The empty dependency array ensures the effect runs only once (on component mount)
+  useFocusEffect(
+    React.useCallback(() => {
+      const fetchDataAndUpdateState = async () => {
+        fetchData();
+      };
+
+      fetchDataAndUpdateState(); // Fetch data when the component is focused
+
+      // Return a cleanup function if needed
+      return () => {
+        // Cleanup code, if any
+      };
+    }, []), // The empty dependency array ensures the effect runs only once (on component mount)
+  );
 
   return (
     <View style={styles.container}>

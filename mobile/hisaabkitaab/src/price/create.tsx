@@ -1,109 +1,166 @@
-import React, {useEffect, useState} from 'react';
-import {View, Text, FlatList, StyleSheet} from 'react-native';
-interface DataItem {
-  id: string;
+import {useNavigation} from '@react-navigation/native';
+import React, {useState} from 'react';
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  Image,
+  TextInput,
+  Button,
+  StyleSheet,
+} from 'react-native';
+// import ImagePicker, {ImagePickerResponse} from 'react-native-image-picker';
+import * as ImagePicker from 'react-native-image-picker';
+
+interface ImageLocal {
+  data: string;
+}
+
+interface Item {
+  name: string;
   price: string;
   unit: string;
-  name: string;
+  image_url: string;
+  created_at: string;
 }
 
-const data: DataItem[] = [
-  {id: '1', price: '$10', unit: 'each', name: 'milk'},
-  {id: '2', price: '$15', unit: 'pair', name: 'curd'},
-  {id: '3', price: '$25', unit: 'dozen', name: 'cheese'},
-  // Add more data items here
-];
-import {config} from '../../config';
-export function ItemsListingScreen() {
-  return (
-    <View
-      style={{
-        flex: 1,
-        alignItems: 'center',
-        justifyContent: 'center',
-        backgroundColor: '#e6ffe6',
-      }}>
-      <Table />
-    </View>
-  );
-}
-const Table: React.FC = () => {
-  const [data, setData] = useState<DataItem[]>([]);
+export const styles = StyleSheet.create({
+  container: {
+    padding: 16,
+  },
+  input: {
+    height: 40,
+    borderColor: 'gray',
+    borderWidth: 1,
+    marginBottom: 12,
+    paddingHorizontal: 8,
+  },
+  button: {
+    marginTop: 16,
+  },
+  image: {
+    width: 100,
+    height: 100,
+    marginTop: 16,
+  },
+  successMessage: {
+    color: 'green',
+    marginTop: 8,
+  },
+  errorMessage: {
+    color: 'red',
+    marginTop: 8,
+  },
+});
 
-  useEffect(() => {
-    const url = `${config.crudUrl}`;
-    console.log('url:', url);
-    // Perform your API call here and update the data state
-    fetch(url)
-      .then(response => {
-        return response.json();
-      })
-      .then(responseData => {
-        console.log('items list in app,responseData:', responseData);
-        setData(responseData); // Update the data state with API response data
-        // setIsLoading(false); // Set loading to false when data is loaded
+const CreateItemForm: React.FC = () => {
+  const [item, setItem] = useState<Item>({
+    name: '',
+    price: '',
+    unit: '',
+    image_url: '',
+    created_at: new Date().toISOString(),
+  });
+
+  const [image, setImage] = useState<ImageLocal | null>(null);
+  const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const [successMessage, setSuccessMessage] = useState<string | null>(null);
+
+  const handleImagePicker = (response: ImagePicker.ImagePickerResponse) => {
+    if (response.didCancel || response.errorMessage) {
+      return;
+    }
+
+    const imageData: ImageLocal = {
+      data: response?.assets?.[0].uri ?? '',
+    };
+
+    setImage(imageData);
+  };
+  const navigation = useNavigation();
+  const handleSubmit = () => {
+    const apiUrl =
+      'https://371ea2ur16.execute-api.ap-south-1.amazonaws.com/dev/item';
+
+    fetch(apiUrl, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        ...item,
+        image_url: image?.data ?? '',
+      }),
+    })
+      .then(response => response.json())
+      .then(data => {
+        console.log('Success:', data);
+        setSuccessMessage('Record successfully created');
+        setErrorMessage(null);
+        setItem({
+          name: '',
+          price: '',
+          unit: '',
+          image_url: '',
+          created_at: new Date().toISOString(),
+        });
+        setImage(null);
+        navigation.navigate('Items Listing');
       })
       .catch(error => {
-        console.error('API Error:', error);
-        // setIsLoading(false); // Set loading to false in case of an error
+        console.error('Error:', error);
+        setErrorMessage('Error creating record');
+        setSuccessMessage(null);
       });
-  }, []); // The empty dependency array ensures the effect runs only once (on component mount)
+  };
 
   return (
     <View style={styles.container}>
-      <Text style={{fontWeight: 'bold', margin: 15, fontSize: 25}}></Text>
-      <View style={styles.headerRow}>
-        <Text style={styles.headerCell}>Name</Text>
-        <Text style={styles.headerCell}>Price</Text>
-        <Text style={styles.headerCell}>Unit</Text>
-      </View>
-      <FlatList
-        data={data}
-        keyExtractor={item => item.id}
-        renderItem={({item}) => (
-          <View style={styles.row}>
-            <Text style={styles.cell}>{item.name}</Text>
-            <Text style={styles.cell}>{item.price}</Text>
-            <Text style={styles.cell}>{item.unit}</Text>
-          </View>
-        )}
+      <TextInput
+        style={styles.input}
+        placeholder="Name"
+        onChangeText={text => setItem({...item, name: text})}
       />
+      <TextInput
+        style={styles.input}
+        placeholder="Price"
+        onChangeText={text => setItem({...item, price: text})}
+      />
+      <TextInput
+        style={styles.input}
+        placeholder="Unit"
+        onChangeText={text => setItem({...item, unit: text})}
+      />
+
+      {/* Image picker button */}
+      <TouchableOpacity
+        onPress={() =>
+          ImagePicker.launchImageLibrary(
+            {mediaType: 'photo'},
+            handleImagePicker,
+          )
+        }>
+        <Text>Choose Image</Text>
+      </TouchableOpacity>
+
+      {/* Display selected image */}
+      {image && (
+        <Image
+          source={{uri: `data:image/jpeg;base64,${image.data}`}}
+          style={styles.image}
+        />
+      )}
+
+      {/* Success and Error messages */}
+      {successMessage && (
+        <Text style={styles.successMessage}>{successMessage}</Text>
+      )}
+      {errorMessage && <Text style={styles.errorMessage}>{errorMessage}</Text>}
+
+      {/* Submit button */}
+      <Button title="Submit" onPress={handleSubmit} style={styles.button} />
     </View>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingLeft: 10,
-    marginLeft: 1,
-    width: 400,
-  },
-  headerRow: {
-    flexDirection: 'row',
-    borderBottomWidth: 2,
-    borderColor: 'purple',
-    paddingBottom: 8,
-    marginBottom: 40,
-  },
-  headerCell: {
-    flex: 1,
-    fontWeight: 'bold',
-    textAlign: 'center',
-    fontSize: 20,
-  },
-  row: {
-    flexDirection: 'row',
-    borderBottomWidth: 1,
-    borderColor: 'gray',
-    paddingBottom: 8,
-    marginBottom: 8,
-  },
-  cell: {
-    flex: 1,
-    textAlign: 'center',
-    fontWeight: '800',
-  },
-});
-
-export default Table;
+export default CreateItemForm;
