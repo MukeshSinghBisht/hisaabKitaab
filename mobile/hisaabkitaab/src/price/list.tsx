@@ -1,7 +1,15 @@
 import React, {useEffect, useState} from 'react';
 import {useFocusEffect} from '@react-navigation/native';
+import {
+  View,
+  Text,
+  FlatList,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import {config} from '../../config';
 
-import {View, Text, FlatList, StyleSheet} from 'react-native';
 interface DataItem {
   id: string;
   price: string;
@@ -9,13 +17,6 @@ interface DataItem {
   name: string;
 }
 
-// const data: DataItem[] = [
-//   {id: '1', price: '$10', unit: 'each', name: 'milk'},
-//   {id: '2', price: '$15', unit: 'pair', name: 'curd'},
-//   {id: '3', price: '$25', unit: 'dozen', name: 'cheese'},
-//   // Add more data items here
-// ];
-import {config} from '../../config';
 export function ItemsListingScreen() {
   return (
     <View
@@ -29,49 +30,73 @@ export function ItemsListingScreen() {
     </View>
   );
 }
+
 const Table: React.FC = () => {
   const [data, setData] = useState<DataItem[]>([]);
 
   function fetchData() {
     const url = `${config.crudUrl}`;
     console.log('url:', url);
-    // Perform your API call here and update the data state
+
     fetch(url)
-      .then(response => {
-        return response.json();
-      })
+      .then(response => response.json())
       .then(responseData => {
         console.log('items list in app,responseData:', responseData);
-        setData(responseData); // Update the data state with API response data
-        // setIsLoading(false); // Set loading to false when data is loaded
+        setData(responseData);
       })
       .catch(error => {
         console.error('API Error:', error);
-        // setIsLoading(false); // Set loading to false in case of an error
       });
   }
-  // useEffect(() => {
 
-  // }, []); // The empty dependency array ensures the effect runs only once (on component mount)
+  function handleDelete(id: string) {
+    Alert.alert(
+      'Confirm Delete',
+      'Are you sure you want to delete this item?',
+      [
+        {
+          text: 'Cancel',
+          style: 'cancel',
+        },
+        {
+          text: 'Delete',
+          onPress: async () => {
+            // Call the delete API with the item ID
+            const deleteUrl = `https://371ea2ur16.execute-api.ap-south-1.amazonaws.com/dev/item/${id}`;
+            try {
+              const response = await fetch(deleteUrl, {method: 'DELETE'});
+              if (response.ok) {
+                console.log('Item deleted successfully');
+                // Show success message
+                Alert.alert('Success', 'Item successfully deleted');
+                // Refresh the data
+                fetchData();
+              } else {
+                console.error('Delete API Error:', response.status);
+                Alert.alert('Error', 'Failed to delete item');
+              }
+            } catch (error) {
+              console.error('Delete API Error:', error);
+              Alert.alert('Error', 'Failed to delete item');
+            }
+          },
+        },
+      ],
+      {cancelable: false},
+    );
+  }
+
   useFocusEffect(
     React.useCallback(() => {
-      const fetchDataAndUpdateState = async () => {
-        fetchData();
-      };
-
-      fetchDataAndUpdateState(); // Fetch data when the component is focused
-
-      // Return a cleanup function if needed
-      return () => {
-        // Cleanup code, if any
-      };
-    }, []), // The empty dependency array ensures the effect runs only once (on component mount)
+      fetchData();
+    }, []),
   );
 
   return (
     <View style={styles.container}>
-      <Text style={{fontWeight: 'bold', margin: 15, fontSize: 25}}></Text>
+      <Text style={{fontWeight: 'bold', margin: 15, fontSize: 25}} />
       <View style={styles.headerRow}>
+        <Text style={styles.headerCell}>Actions</Text>
         <Text style={styles.headerCell}>Name</Text>
         <Text style={styles.headerCell}>Price</Text>
         <Text style={styles.headerCell}>Unit</Text>
@@ -81,6 +106,21 @@ const Table: React.FC = () => {
         keyExtractor={item => item.id}
         renderItem={({item}) => (
           <View style={styles.row}>
+            <TouchableOpacity onPress={() => handleDelete(item.id)}>
+              <Text
+                style={{
+                  flex: 1,
+                  textAlign: 'left',
+                  fontWeight: '800',
+                  marginLeft: 40,
+                  color: 'red',
+                  marginRight: 10,
+                  marginLeft: 20,
+                  textAlignVertical: 'center',
+                }}>
+                Remove
+              </Text>
+            </TouchableOpacity>
             <Text style={styles.cell}>{item.name}</Text>
             <Text style={styles.cell}>{item.price}</Text>
             <Text style={styles.cell}>{item.unit}</Text>
@@ -109,7 +149,7 @@ const styles = StyleSheet.create({
     flex: 1,
     fontWeight: 'bold',
     textAlign: 'center',
-    fontSize: 20,
+    fontSize: 17,
   },
   row: {
     flexDirection: 'row',
@@ -120,8 +160,10 @@ const styles = StyleSheet.create({
   },
   cell: {
     flex: 1,
-    textAlign: 'center',
+    textAlign: 'left',
     fontWeight: '800',
+    marginLeft: 40,
+    textAlignVertical: 'center',
   },
 });
 

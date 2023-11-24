@@ -51,6 +51,17 @@ export const styles = StyleSheet.create({
     color: 'red',
     marginTop: 8,
   },
+  imagetext: {
+    color: 'green',
+    marginTop: 20,
+    marginBottom: 20,
+    borderWidth: 1, // Border for the image
+    borderRadius: 0, // Border radius for rounded corners
+    textAlign: 'center',
+    width: 'auto',
+    height: 50,
+    textAlignVertical: 'center',
+  },
 });
 
 const CreateItemForm: React.FC = () => {
@@ -105,6 +116,7 @@ const CreateItemForm: React.FC = () => {
           created_at: new Date().toISOString(),
         });
         setImage(null);
+        setSuccessMessage('');
         navigation.navigate('Items Listing');
       })
       .catch(error => {
@@ -140,7 +152,7 @@ const CreateItemForm: React.FC = () => {
             handleImagePicker,
           )
         }>
-        <Text>Choose Image</Text>
+        <Text style={styles.imagetext}>Choose Image</Text>
       </TouchableOpacity>
 
       {/* Display selected image */}
